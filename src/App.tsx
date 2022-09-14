@@ -1,34 +1,35 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
 import './App.css'
+import type {ChangeEventHandler} from "react";
+import {useCallback} from "react";
+import i18n from "./i18n";
+import {useTranslation} from "react-i18next";
 
 function App() {
-  const [count, setCount] = useState(0)
+    const {t} = useTranslation()
+    const {changeLanguage} = i18n
 
-  return (
-    <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </div>
-  )
+    const onLangChange: ChangeEventHandler<HTMLSelectElement> = useCallback((e) => {
+        console.log(e.target.value)
+        changeLanguage(e.target.value, () => {
+            console.log('eee')
+        }).catch(console.error)
+    }, [changeLanguage, t])
+
+    return (
+        <main className="app">
+            <div className="container">
+                <h1>Example</h1>
+                <h2>{t("example")}</h2>
+                <h3>{t("my.nested.example")}</h3>
+                <select onChange={onLangChange}>
+                    <option value={"en"}>EN</option>
+                    <option value={"pl"}>PL</option>
+                    <option value={"de"}>DE</option>
+                    <option value={"fr"}>FR</option>
+                </select>
+            </div>
+        </main>
+    )
 }
 
 export default App

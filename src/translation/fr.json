@@ -1,0 +1,8 @@
+{
+  "example1": "FR_EN Example",
+  "my": {
+    "nested": {
+      "example": "MISSING"
+    }
+  }
+}
