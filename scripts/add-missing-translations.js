@@ -21,7 +21,7 @@ const get = (obj, path) => {
     return properties.reduce((prev, curr) => prev && prev[curr], obj)
 }
 
-const set = (obj, value, path) => {
+const set = (obj, path, value) => {
     const [first, ...rest] = path.split('.')
     if (!rest.length) {
         obj[first] = value
@@ -29,7 +29,7 @@ const set = (obj, value, path) => {
     }
 
     if (!obj[first] || ['string', 'number'].includes(typeof obj[first])) obj[first] = {}
-    set(obj[first], value, rest.join('.'))
+    set(obj[first], rest.join('.'), value)
 }
 
 const sortReplacer = (key, value) => {
@@ -65,9 +65,9 @@ fs.readdirSync(translationsDirectory).forEach(file => {
     patternFileKeys.forEach(key => {
         const value = get(fileContent, key)
         if (!value) {
-            set(result, `${language}_${get(patternFileContent, key)}`, key)
+            set(result, key, `${language}_${get(patternFileContent, key)}`)
         } else {
-            set(result, value, key)
+            set(result, key, value)
         }
     })
 
